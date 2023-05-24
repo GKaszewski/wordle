@@ -27,7 +27,7 @@ const GameplayLogic = () => {
             return;
         }
 
-    }, [words, addScore, clearLetters, clearScore, clearWords, guessWord, setShowModal, setWon])
+    }, [words, addScore, clearLetters, clearScore, clearWords, guessWord, setShowModal, setWon, addPreviousWord])
 
     return <></>
 }

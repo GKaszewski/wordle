@@ -1,4 +1,12 @@
 import {create} from "zustand";
+import {
+    addExistingLetter,
+    addGuessedLetter, addMissedLetter, deleteExistingLetter, deleteGuessedLetter, deleteMissedLetter,
+    getRandomWord,
+    nextGame,
+    removeWordFromLetters,
+    revertLastWordFromLetters
+} from "./actions.tsx";
 
 type AppStore = {
     words: string[];
@@ -12,6 +20,7 @@ type AppStore = {
     clearCurrentWord: () => void;
     addLetter: (letter: string) => void;
     removeLetter: (letter: string) => void;
+    removeWordFromLetters: () => void;
     clearLetters: () => void;
     score: number;
     addScore: (score: number) => void;
@@ -32,6 +41,23 @@ type AppStore = {
     setPreviousWords: (words: string[]) => void;
     addPreviousWord: (word: string) => void;
     nextGame: () => void;
+    revertLastWordFromLetters: () => void;
+    guessedLetters: Map<string, number>;
+    missedLetters: Map<string, number>;
+    existingLetters: Map<string, number>;
+    setGuessedLetters: (guessedLetters: Map<string, number>) => void;
+    setMissedLetters: (missedLetters: Map<string, number>) => void;
+    setExistingLetters: (existingLetters: Map<string, number>) => void;
+    addGuessedLetter: (letter: string) => void;
+    addMissedLetter: (letter: string) => void;
+    addExistingLetter: (letter: string) => void;
+    deleteGuessedLetter: (letter: string) => void;
+    deleteMissedLetter: (letter: string) => void;
+    deleteExistingLetter: (letter: string) => void;
+    clearGuessedLetters: () => void;
+    clearMissedLetters: () => void;
+    clearExistingLetters: () => void;
+    clearAllLetters: () => void;
 }
 
 const useAppStore = create<AppStore>((set, get) => ({
@@ -50,7 +76,7 @@ const useAppStore = create<AppStore>((set, get) => ({
     score: 0,
     addScore: (score: number) => set({score: get().score + score}),
     clearScore: () => set({score: 0}),
-    guessWord: 'dupas',
+    guessWord: '',
     setGuessWord: (word: string) => set({guessWord: word}),
     clearGuessWord: () => set({guessWord: ''}),
     wordsList: [],
@@ -63,23 +89,27 @@ const useAppStore = create<AppStore>((set, get) => ({
     setFetchingWords: (fetchingWords: boolean) => set({fetchingWords: fetchingWords}),
     previousWords: [],
     setPreviousWords: (words: string[]) => set({previousWords: words}),
-    getRandomWord: () => {
-        const {wordsList, previousWords} = get();
-        const words = wordsList.filter(word => !previousWords.includes(word));
-        const randomIndex = Math.floor(Math.random() * words.length);
-        const randomWord = words[randomIndex];
-        set({previousWords: [...previousWords, randomWord]});
-        return randomWord;
-    },
+    getRandomWord: () => getRandomWord(set, get),
     addPreviousWord: (word: string) => set({previousWords: [...get().previousWords, word]}),
-    nextGame: () => {
-        const {clearLetters, clearCurrentWord, clearWords} = get();
-        clearLetters();
-        clearCurrentWord();
-        clearWords();
-        const randomWord = get().getRandomWord();
-        set({guessWord: randomWord});
-    }
+    nextGame: () => nextGame(set, get),
+    removeWordFromLetters: () => removeWordFromLetters(set, get),
+    revertLastWordFromLetters: () => revertLastWordFromLetters(set, get),
+    guessedLetters: new Map<string, number>(),
+    missedLetters: new Map<string, number>(),
+    existingLetters: new Map<string, number>(),
+    setGuessedLetters: (guessedLetters: Map<string, number>) => set({guessedLetters: guessedLetters}),
+    setMissedLetters: (missedLetters: Map<string, number>) => set({missedLetters: missedLetters}),
+    setExistingLetters: (existingLetters: Map<string, number>) => set({existingLetters: existingLetters}),
+    addGuessedLetter: (letter: string) => addGuessedLetter(set, get, letter),
+    addMissedLetter: (letter: string) => addMissedLetter(set, get, letter),
+    addExistingLetter: (letter: string) => addExistingLetter(set, get, letter),
+    deleteGuessedLetter: (letter: string) => deleteGuessedLetter(set, get, letter),
+    deleteMissedLetter: (letter: string) => deleteMissedLetter(set, get, letter),
+    deleteExistingLetter: (letter: string) => deleteExistingLetter(set, get, letter),
+    clearGuessedLetters: () => set({guessedLetters: new Map<string, number>()}),
+    clearMissedLetters: () => set({missedLetters: new Map<string, number>()}),
+    clearExistingLetters: () => set({existingLetters: new Map<string, number>()}),
+    clearAllLetters: () => set({guessedLetters: new Map<string, number>(), missedLetters: new Map<string, number>(), existingLetters: new Map<string, number>()}),
 }));
 
 export default useAppStore;

@@ -35,7 +35,7 @@ const CrosswordGrid: FC<Props> = ({rows, columns}) => {
             Array.from(Array(columns), (_, col) => (
                 <div
                     key={`${row}-${col}`}
-                    className={`w-10 h-10 rounded-sm shrink-0 flex items-center justify-center text-white ${getColor(row, col)}`}
+                    className={`w-10 h-10 shadow-lg rounded-sm shrink-0 flex items-center justify-center text-white ${getColor(row, col)}`}
                 >
                     {letters[row * columns + col]}
                 </div>

@@ -11,10 +11,10 @@ import Spinner from "./components/spinner.tsx";
 import WordsLoader from "./components/wordsLoader.tsx";
 
 function App() {
-    const {won, showModal, fetchingWords} = useAppStore();
+    const {won, showModal, fetchingWords, guessWord} = useAppStore();
 
     return (
-        <div className="flex flex-col justify-center items-center min-h-screen">
+        <div className="flex gr flex-col justify-center items-center min-h-screen">
             <WordsHandler />
             <GameplayLogic />
             <WordsLoader />
@@ -23,7 +23,7 @@ function App() {
             <span className="mt-8" />
             <CrosswordGrid rows={6} columns={5}/>
             <span className="mt-8" />
-            {!showModal && <Keyboard />}
+            {!showModal && guessWord && <Keyboard />}
             {fetchingWords && <Spinner />}
             <span className="flex-1" />
             {won && <WinModal />}
