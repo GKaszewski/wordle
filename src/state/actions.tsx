@@ -14,7 +14,7 @@ export const removeWordFromLetters = (set: any, get: any) => {
     set({letters: newLetters});
 }
 
-export const revertLastWordFromLetters = (set: any, get: any) => {
+export const revertLastWordFromLetters = (get: any) => {
     const { currentWord, clearCurrentWord, removeWordFromLetters, deleteMissedLetter, deleteGuessedLetter, deleteExistingLetter} = get();
     const letters = currentWord.split('');
     letters.forEach((letter: string) => {

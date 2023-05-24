@@ -93,7 +93,7 @@ const useAppStore = create<AppStore>((set, get) => ({
     addPreviousWord: (word: string) => set({previousWords: [...get().previousWords, word]}),
     nextGame: () => nextGame(set, get),
     removeWordFromLetters: () => removeWordFromLetters(set, get),
-    revertLastWordFromLetters: () => revertLastWordFromLetters(set, get),
+    revertLastWordFromLetters: () => revertLastWordFromLetters(get),
     guessedLetters: new Map<string, number>(),
     missedLetters: new Map<string, number>(),
     existingLetters: new Map<string, number>(),
